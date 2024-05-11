@@ -3,9 +3,11 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"],
+      "@app/": ["./app/*"],
+      "@hooks/*": ["./hooks/*"],
+      "@components/*": ["./components/*"],
+      "@i18n/*": ["./i18n/*"]
     }
   },
   "include": [
