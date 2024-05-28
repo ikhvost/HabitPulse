@@ -1,0 +1,3 @@
+export const ROW_DAYS_COUNT = 28
+export const COLUMN_DAYS_COUNT = 7
+export const DAYS_COUNT = ROW_DAYS_COUNT * COLUMN_DAYS_COUNT

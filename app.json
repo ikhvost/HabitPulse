@@ -5,7 +5,9 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "scheme": "myapp",
-    "userInterfaceStyle": "automatic",
+    "splash": {
+      "backgroundColor": "#1A1A1A"
+    },
     "ios": {
       "supportsTablet": true
     },
@@ -14,7 +16,16 @@
       "output": "static"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "./assets/fonts/Rubik-VariableFont_wght.ttf",
+            "./assets/fonts/Rubik-Italic-VariableFont_wght.ttf"
+          ]
+        }
+      ]
     ]
   }
 }
