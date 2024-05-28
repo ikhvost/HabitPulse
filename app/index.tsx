@@ -1,19 +1,15 @@
-import { Text, View } from 'react-native'
+import { router } from 'expo-router'
+import { useCallback } from 'react'
+import MainHeader from '@/components/main-header'
 import { useTranslation } from 'react-i18next'
-import '@i18n/config'
 
 export default function Index() {
   const { t } = useTranslation()
+  const onAddPress = useCallback(() => router.navigate('/add'), [])
 
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-      }}
-    >
-      <Text>{t('title')}</Text>
-    </View>
+    <>
+      <MainHeader title={t('index.title')} onAddPress={onAddPress}/>
+    </>
   )
 }

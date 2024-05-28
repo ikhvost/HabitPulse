@@ -1,3 +1,19 @@
 {
-  "title": "Edit app/index.tsx to edit this screen."
+  "index": {
+    "title": "Habits+"
+  },
+  "add": {
+    "title": "New Habit",
+    "titleInput": {
+      "label": "Title",
+      "placeholder": "max. 50 characters"
+    },
+    "descriptionInput": {
+      "label": "Description",
+      "placeholder": "max. 100 characters"
+    },
+    "iconsGrid": {
+      "title": "Icon"
+    }
+  }
 }
