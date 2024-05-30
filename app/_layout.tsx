@@ -1,11 +1,12 @@
 import { useCallback } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import * as SplashScreen from 'expo-splash-screen'
 import { useFonts } from 'expo-font'
 import { Slot } from 'expo-router'
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6'
 import '@/i18n/config'
 import Colors from '@/common/colors'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 SplashScreen.preventAutoHideAsync()
 
@@ -22,9 +23,9 @@ export default function IndexLayout() {
   if (!fontsLoaded && !fontsLoadingError) { return null }
 
   return (
-    <View style={styles.main} onLayout={onLayoutRootView}>
+    <SafeAreaView style={styles.main} onLayout={onLayoutRootView}>
       <Slot/>
-    </View>
+    </SafeAreaView>
   )
 }
 
