@@ -41,11 +41,12 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: 400,
     color: Colors.light,
-    lineHeight: 30,
     borderColor: Colors.light,
     borderWidth: 0.5,
     borderStyle: 'solid',
     borderRadius: 10,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    height: 30
   }
 })
