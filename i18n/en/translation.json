@@ -6,11 +6,11 @@
     "title": "New Habit",
     "titleInput": {
       "label": "Title",
-      "placeholder": "max. 50 characters"
+      "placeholder": "max. {{count}} characters"
     },
     "descriptionInput": {
       "label": "Description",
-      "placeholder": "max. 100 characters"
+      "placeholder": "max. {{count}} characters"
     },
     "iconsGrid": {
       "title": "Icon"

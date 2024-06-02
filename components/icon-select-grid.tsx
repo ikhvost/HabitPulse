@@ -1,31 +1,32 @@
-import HabitIcons from '@/common/habit-icons'
 import { Pressable, StyleSheet, View, Text } from 'react-native'
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6'
 import Colors from '@/common/colors'
 import { useTranslation } from 'react-i18next'
-import { memo, useCallback, useState } from 'react'
+import { memo } from 'react'
 
-type HabitIconsGridProps = {
+type IconSelectGridProps = {
+  selected: string,
+  icons: string[],
   onSelect: (iconName: string) => void
 }
 
-export default memo(function HabitIconsGrid({ onSelect }: HabitIconsGridProps) {
+export default memo(function IconSelectGrid({ icons, selected, onSelect }: IconSelectGridProps) {
   const { t } = useTranslation()
-  const [selected, setSelected] = useState<string>('')
-
-  const onPress = useCallback((icon: string) => {
-    setSelected(icon)
-    onSelect(icon)
-  }, [onSelect, setSelected])
 
   return (
     <>
       <Text style={styles.title}>{t('add.iconsGrid.title')}</Text>
-      <View style={styles.container}>
+      <View style={styles.container} accessibilityRole="radiogroup" accessibilityLabel={t('add.iconsGrid.title')}>
         {
-          HabitIcons.map((icon) => (
+          icons.map((icon) => (
             <View style={styles.subContainer} key={icon}>
-              <Pressable style={{ ...styles.pressable, ...icon === selected && styles.selected }} onPress={() => onPress(icon)}>
+              <Pressable
+                accessibilityRole="radio"
+                accessibilityLabel={icon}
+                accessibilityState={{ checked: selected === icon }}
+                style={{ ...styles.pressable, ...icon === selected && styles.selected }}
+                onPress={() => onSelect(icon)}
+              >
                 <FontAwesome6
                   style={styles.icon}
                   name={icon}
@@ -60,8 +61,7 @@ const styles = StyleSheet.create({
     aspectRatio: '1/1'
   },
   pressable: {
-    width: '100%',
-    height: '100%',
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,

@@ -30,8 +30,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 30
+    paddingHorizontal: 10
   },
   title: {
     fontFamily: 'Rubik',
@@ -40,8 +39,8 @@ const styles = StyleSheet.create({
     color: Colors.light
   },
   btn: {
-    width: 28,
-    height: 28,
+    width: 30,
+    height: 30,
     borderWidth: 1,
     borderColor: Colors.light,
     borderStyle: 'solid'

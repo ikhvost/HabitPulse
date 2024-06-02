@@ -1,6 +1,6 @@
 import { ColorValue } from 'react-native'
 
-export interface Habit {
+export interface HabitModel {
   id: number;
   title: string;
   description: string;
@@ -8,3 +8,5 @@ export interface Habit {
   iconName: string;
   points: boolean[];
 }
+
+export type AddHabitModel = Omit<HabitModel, 'id'>
