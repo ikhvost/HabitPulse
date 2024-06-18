@@ -5,7 +5,7 @@ import Utils from '@/common/utils'
 import HabitsStorage from '@/common/habits-storage'
 import Config from '@/common/config'
 
-export async function seed(count: number = 5): Promise<void> {
+export async function seed(count: number): Promise<void> {
   await Promise.all([
     new Array(count).fill(null).map((_, i) =>
       HabitsStorage.overwriteHabit(generateHabit(i))
