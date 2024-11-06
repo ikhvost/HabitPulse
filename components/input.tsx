@@ -3,22 +3,25 @@ import Colors from '@/common/colors'
 import { memo } from 'react'
 
 type InputProps = {
+  maxLength?: number,
   label: string
   value: string
   placeholder: string
-  onChangeText: (test: string) => void
+  onValueChange: (test: string) => void
 }
 
-export default memo(function Input({ label, value, placeholder, onChangeText }: InputProps) {
+export default memo(function Input({ maxLength, label, value, placeholder, onValueChange }: InputProps) {
   return (
     <View style={styles.inputContainer}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
+        maxLength={maxLength}
+        accessibilityLabel={label}
         style={styles.input}
         placeholder={placeholder}
         placeholderTextColor={Colors.gray}
         value={value}
-        onChangeText={onChangeText}
+        onChangeText={onValueChange}
       />
     </View>
   )

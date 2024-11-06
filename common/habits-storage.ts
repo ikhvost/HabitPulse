@@ -1,6 +1,7 @@
-import { Habit } from '@/models'
+import { HabitModel, AddHabitModel } from '@/models'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Utils from './utils'
+import dayjs from 'dayjs'
 
 const lastUpdateKey = 'lastUpdate'
 
@@ -14,16 +15,51 @@ async function getLastUpdateDate(): Promise<Date | undefined> {
   return new Date(time)
 }
 
-async function insertHabit(habit: Omit<Habit, 'id'>): Promise<Habit> {
-  const withId = updateHabitWithGeneratedId(habit)
-
-  await AsyncStorage.setItem(withId.id.toString(), JSON.stringify(withId))
-  await AsyncStorage.setItem(lastUpdateKey, withId.id.toString())
-
+async function createHabit(habit: AddHabitModel): Promise<HabitModel> {
+  const withId = generateAndSetId(habit)
+  await setHabit(withId)
   return withId
 }
 
-async function getHabitById(id: number | string): Promise<Habit | undefined> {
+async function overwriteHabit(habit: HabitModel): Promise<HabitModel> {
+  await setHabit(habit)
+  return habit
+}
+
+async function getHabitsSyncedWithCurrentDate(): Promise<HabitModel[]> {
+  const [habits, lastUpdateDate] = await Promise.all([getHabits(), getLastUpdateDate()])
+
+  const pointsCountToUpdate = dayjs().startOf('d').diff(dayjs(lastUpdateDate).startOf('d'), 'days')
+
+  if (!pointsCountToUpdate) { return habits }
+
+  return syncHabits(habits, pointsCountToUpdate)
+}
+
+function syncHabits(habits: HabitModel[], pointsCount: number): Promise<HabitModel[]> {
+  for (const habit of habits) {
+    habit.points = habit.points
+      .slice(pointsCount)
+      .concat(Utils.generateHabitPoints(pointsCount))
+  }
+
+  return overwriteHabits(habits)
+}
+
+function overwriteHabits(habits: HabitModel[]): Promise<HabitModel[]> {
+  return Promise.all(habits.map(overwriteHabit))
+}
+
+async function getHabits(): Promise<HabitModel[]> {
+  const isIdKey = Number
+
+  const keys = await AsyncStorage.getAllKeys()
+  const idKeys = keys.filter(isIdKey)
+  const habits = await Promise.all(idKeys.map(getHabitById))
+  return Utils.filteroutNullAndUndefined(habits)
+}
+
+async function getHabitById(id: number | string): Promise<HabitModel | undefined> {
   const raw = await AsyncStorage.getItem(id.toString())
   if (!raw) return
 
@@ -34,20 +70,20 @@ async function getHabitById(id: number | string): Promise<Habit | undefined> {
   }
 }
 
-async function getHabits(): Promise<Habit[]> {
-  const keys = await AsyncStorage.getAllKeys()
-  const habitKeys = keys.filter(key => key !== lastUpdateKey && Number(key))
-  const habits = await Promise.all(habitKeys.map(getHabitById))
-  return Utils.filteroutNullAndUndefined(habits)
+async function setHabit(data: HabitModel): Promise<void> {
+  await Promise.all([
+    AsyncStorage.setItem(data.id.toString(), JSON.stringify(data)),
+    AsyncStorage.setItem(lastUpdateKey, new Date().getTime().toString())
+  ])
 }
 
-function updateHabitWithGeneratedId(habit: Omit<Habit, 'id'>): Required<Habit> {
+function generateAndSetId(habit: AddHabitModel): Required<HabitModel> {
   const currTime = new Date().getTime()
   return { ...habit, id: currTime }
 }
 
 export default {
-  getHabits,
-  getLastUpdateDate,
-  insertHabit
+  getHabits: getHabitsSyncedWithCurrentDate,
+  createHabit,
+  overwriteHabit
 }
